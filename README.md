@@ -51,6 +51,12 @@ $ npm install
  $ npm run start
 ```
 
+## Deployment 
+
+### Run migrations
+
+### Swarm
+
 ## TODO
 
 - Prevent people from voting via the same wallet twice.
