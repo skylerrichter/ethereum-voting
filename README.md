@@ -8,9 +8,9 @@ Ganache is a local Ethereum blockchain implemented in JavaScript. You can downlo
 
 ### Install MetaMask
 
-To connect to the Ethereum blockchain from your browser you will need to install the MetaMask extension which can be downloaded [here](https://metamask.io)
+To connect to the Ethereum blockchain from your browser you will need to install the MetaMask extension which can be found [here](https://metamask.io).
 
-By default MetaMask will connect to the main Ethereum network. To connect to your local blockchain click on the MetaMask icon and then open the network drop-down in the top left corner and click "Custom RPC" and enter the address to your local Ethereum blockchain found Ganache GUI (by default this is HTTP://127.0.0.1:7545).
+By default MetaMask will connect to the main Ethereum network. To connect to your local blockchain open MetaMask then open the network drop-down in the top left corner and click "Custom RPC" and enter the address to your local Ethereum blockchain found Ganache GUI (by default this is HTTP://127.0.0.1:7545).
 
 Once you have connected to your local Ethereum blockchain open the accounts drop-down in the top left corner and click "Import Account" and paste the private key of the first Ethereum wallet found in the Ganache GUI.
 
@@ -37,9 +37,11 @@ $ npm install
 
 ### Configure Truffle
 
-
+If you have changed the hostname or port number in Ganache you will need to reflect these changes in the truffle.js file.
 
 ### Run migrations
+
+Running migrations will deploy contracts to your local Ethereum blockchain and initialize them.
 
 ```
  $ truffle migrate
