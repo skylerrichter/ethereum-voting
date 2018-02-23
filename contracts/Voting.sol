@@ -3,7 +3,7 @@ pragma solidity ^0.4.18;
 contract Voting {
   
   /*
-  A mapping field is similar to an associative array or object hash. The mapping key is the candidates name stored as bytes32 and the value is uint8 to store the vote count.
+  The mapping key is the candidates name stored as bytes32 and the mapping value is the vote count stored as uint8.
   */
   mapping(bytes32 => uint8) public votesReceived;
 
@@ -13,21 +13,22 @@ contract Voting {
   bytes32[] public candidateList;
 
   /*
-  Get the voting candidates.
+  Get the candidates.
   */
   function getCandidateList() constant returns (bytes32[]) {
     return candidateList;
   }
 
   /*
-  The constructor will only be called once when the contract is deployed. When we deploy the contract we will pass an array of candidates who will be contesting in the election.
+  The constructor will only be called once when the contract is deployed. 
+  When we deploy the contract we will pass an array of candidates who will be participating in the election.
   */
   function Voting(bytes32[] candidateNames) public {
     candidateList = candidateNames;
   }
 
   /*
-  Returns the total votes a candidate has received so far.
+  Returns the total votes for a given candidate.
   */
   function totalVotesFor(bytes32 candidate) view public returns (uint8) {
     require(validCandidate(candidate));
