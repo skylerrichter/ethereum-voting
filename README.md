@@ -10,8 +10,20 @@
 
 ### Install the Truffle CLI
 
+```
+$ npm install -g truffle
+```
+
 ### NPM install
 
 ### Run migrations
 
+```
+ $ truffle migrate
+```
+
 ### Start Webpack
+
+```
+ $ npm run start
+```
