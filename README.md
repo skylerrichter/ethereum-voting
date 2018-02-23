@@ -2,14 +2,16 @@
 
 ## Local development
 
-Download the Ganache
+### Install Ganache
 
-Clone this repo
+### Install MetaMask
 
-Install the Truffle CLI
+### Clone this repo
 
-NPM install
+### Install the Truffle CLI
 
-Run migrations
+### NPM install
 
-Start Webpack
+### Run migrations
+
+### Start Webpack
