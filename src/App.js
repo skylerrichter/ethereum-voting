@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TruffleContract from 'truffle-contract'
 import VotingContract from '../build/contracts/Voting.json'
 import getWeb3 from './utils/getWeb3'
 
@@ -8,125 +9,109 @@ import './css/pure-min.css'
 import './App.css'
 
 class App extends Component {
+
   constructor(props) {
     super(props)
-
     this.state = {
+      voted: false,
+      choice: null,
       candidates: [],
-      storageValue: 0,
+      contract: null,
       web3: null
     }
   }
 
   componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-
-    getWeb3
-    .then(results => {
+    getWeb3.then((results) => {
       this.setState({
         web3: results.web3
       })
-
-      // Instantiate contract once web3 provided.
       this.instantiateContract()
-    })
-    .catch((e) => {
-      console.log('Error finding web3.')
+    }).catch((e) => {
+      console.log(e)
     })
   }
 
   instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
-
-    const contract = require('truffle-contract')
-
-    // Initialize the voting contract.
-    const voting = contract(VotingContract)
-
-    // Set the provider the contract will use to make transactions.
+    const voting = TruffleContract(VotingContract)
     voting.setProvider(this.state.web3.currentProvider)
-
-    // Get accounts.
     voting.deployed().then((instance) => {
-      instance.getCandidateList.call()
-        .then((candidateList) => {
-          this.setState({
-            candidates: candidateList.map((candidate) => {
-              return {
-                name: this.state.web3.toAscii(candidate),
-                votes: 0
-              }
-            })
+      this.setState({
+        contract: instance
+      })
+      this.fetchCandidates()
+    })
+  }
+
+  fetchCandidates() {
+     this.state.contract.getCandidateList.call()
+      .then((candidateList) => {
+        this.setState({
+          candidates: candidateList.map((candidate) => {
+            return {
+              name: this.state.web3.toAscii(candidate),
+              votes: 0
+            }
           })
         })
-        .then(() => Promise.all(this.state.candidates.map((candidate) => instance.totalVotesFor.call(candidate.name))))
-        .then((votes) => {
-          this.setState({
-            candidates: this.state.candidates.map((candidate, i) => {
-              return {
-                name: candidate.name,
-                votes: votes[i].toString()
-              }
-            })
+      })
+      .then(() => Promise.all(this.state.candidates.map((candidate) => this.state.contract.totalVotesFor.call(candidate.name))))
+      .then((votes) => {
+        this.setState({
+          candidates: this.state.candidates.map((candidate, i) => {
+            return {
+              name: candidate.name,
+              votes: votes[i].toString()
+            }
           })
         })
       })
   }
-
-  vote(candidate) {
-
-    const contract = require('truffle-contract')
-
-    // Initialize the voting contract.
-    const voting = contract(VotingContract)
-
-    // Set the provider the contract will use to make transactions.
-    voting.setProvider(this.state.web3.currentProvider)
-
-    // Get accounts.
+  
+  castVote() {
     this.state.web3.eth.getAccounts((error, accounts) => {
-      voting.deployed().then((instance) => {
-        instance.voteForCandidate(candidate, {from: this.state.web3.eth.accounts[0]}).then(() => {
-          this.setState({
-            candidates: this.state.candidates.map((x) => {
-              return {
-                ...x,
-                votes: x.name === candidate ? parseInt(x.votes) + 1 : parseInt(x.votes)
-              }
-            })
+      this.state.contract.voteForCandidate(this.state.choice, {from: this.state.web3.eth.accounts[0]}).then(() => {
+        this.setState({
+          voted: true,
+          candidates: this.state.candidates.map((x) => {
+            return {
+              ...x,
+              votes: x.name === this.state.choice ? parseInt(x.votes, 10) + 1 : parseInt(x.votes, 10)
+            }
           })
         })
       })
     })
+  }
+
+  getPrecent() {
+    const votes = this.state.candidates.find((candidate) => candidate.name === this.state.choice).votes
+    const total = this.state.candidates.reduce((total, candidate) => total + candidate.votes, 0)
+    return ((votes / total) * 100).toFixed()
   }
 
   render() {
     return (
       <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Donuts</a>
-        </nav>
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              {this.state.candidates.map((candidate, i) => {
-                return (
-                  <div>
-                    {candidate.name} - {candidate.votes}
-                    <button onClick={() => this.vote(candidate.name)}>
-                      Vote
-                    </button>
-                  </div>
-                )
-              })}
+        <main>
+          { !this.state.voted ? (
+            <div>
+              <p>Who serves the best donut in Vancouver?</p>
+              <div className="panel">
+                {this.state.candidates.map((candidate, i) => {
+                  return (
+                    <div className="choice" key={i}>
+                      <input type="radio" id={`choice_${i}`} name="choice" value={candidate.name} onChange={(event) => this.setState({choice: event.target.value})}/>
+                      <label htmlFor={`choice_${i}`}>{candidate.name}</label>
+                    </div>
+                  )
+                })}
+              </div>
+              <button onClick={() => this.castVote()} disabled={this.state.choice === null}>Submit my vote!</button>
             </div>
-          </div>
+          ) : (
+            <div><p>{this.getPrecent()}% of voters would agree!</p></div>
+          )}
         </main>
       </div>
     );
