@@ -13,6 +13,13 @@ contract Voting {
   bytes32[] public candidateList;
 
   /*
+  Get the voting candidates.
+  */
+  function getCandidateList() constant returns (bytes32[]) {
+    return candidateList;
+  }
+
+  /*
   The constructor will only be called once when the contract is deployed. When we deploy the contract we will pass an array of candidates who will be contesting in the election.
   */
   function Voting(bytes32[] candidateNames) public {
