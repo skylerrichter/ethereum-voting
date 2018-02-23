@@ -50,3 +50,9 @@ $ npm install
 ```
  $ npm run start
 ```
+
+## TODO
+
+- Prevent people from voting via the same wallet twice.
+- Accept an array of eligible voters when the contract is deployed.
+- Seal the vote count until voting is complete.
