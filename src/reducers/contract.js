@@ -1,5 +1,18 @@
 import { CONTRACT_CAST_VOTE, CONTRACT_GET_CANDIDATES, CONTRACT_LOAD } from '../constants'
 
+/**
+ * Example state:
+ *
+ * contract: {
+ *   candidates: [
+ *     'Cartems',
+ *     'Lucky\'s'
+ *   ],
+ *   instance: {},
+ *   voted: true
+ * }
+ */
+
 export default (state = {}, action) => {
   switch(action.type) {
     case CONTRACT_GET_CANDIDATES:
