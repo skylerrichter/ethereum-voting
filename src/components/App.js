@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.props.contract.voted) {
+    if (_.get(this.props.contract, 'voted', false)) {
       return (
         <div className="App">
           <main>
@@ -32,7 +32,7 @@ class App extends Component {
         <main>
           <p>Who serves the best donut in Vancouver?</p>
           <div className="panel">
-            {_.get(this.props, ['contract', 'candidates'], []).map((candidate, i) => {
+            {_.get(this.props.contract, 'candidates', []).map((candidate, i) => {
               return (
                 <div className="choice" key={i}>
                   <input 
