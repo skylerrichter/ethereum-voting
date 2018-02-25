@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 
+import '../css/app.css'
 import '../css/open-sans.css'
-import '../App.css'
 
 class App extends Component {
 
@@ -39,16 +39,16 @@ class App extends Component {
         <main>
           <p>Who serves the best donut in Vancouver?</p>
           <div className="panel">
-            {_.get(this.props.contract, 'candidates', []).map((candidate, i) => {
+            {_.get(this.props.contract, 'candidates', []).map((candidate) => {
               return (
-                <div className="choice" key={i}>
+                <div className="choice" key={candidate}>
                   <input 
                     type="radio" 
-                    id={`choice_${i}`} 
+                    id={candidate} 
                     name="choice" 
                     value={candidate} 
                     onChange={(event) => this.setState({choice: event.target.value})}/>
-                  <label htmlFor={`choice_${i}`}>{candidate}</label>
+                  <label htmlFor={candidate}>{candidate}</label>
                 </div>
               )
             })}
@@ -63,6 +63,7 @@ class App extends Component {
       </div>
     );
   }
+
 }
 
 export default App
