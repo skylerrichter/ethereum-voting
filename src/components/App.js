@@ -9,12 +9,19 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      account: '',
       choice: null
     }
   }
 
   componentWillMount() {
-    this.props.load()
+    this.props.load().then(() => {
+      setInterval(() => {
+        this.setState({
+          account: _.get(this.props.web3, 'instance.eth.accounts.0', null)
+        })
+      }, 1000)
+    })
   }
 
   render() {
@@ -46,6 +53,7 @@ class App extends Component {
               )
             })}
           </div>
+          <small>{this.state.account ? this.state.account : 'Connecting to MetaMask.'}</small>
           <button 
             onClick={() => this.props.castVote(this.state.choice)} 
             disabled={this.state.choice === null}>
