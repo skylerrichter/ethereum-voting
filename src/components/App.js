@@ -53,7 +53,7 @@ class App extends Component {
               )
             })}
           </div>
-          <small>{this.state.account ? this.state.account : 'Connecting to MetaMask.'}</small>
+          <small>{this.state.account ? `address: ${this.state.account}` : 'Connecting to MetaMask.'}</small>
           <button 
             onClick={() => this.props.castVote(this.state.choice)} 
             disabled={this.state.choice === null}>
