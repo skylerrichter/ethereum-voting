@@ -16,10 +16,10 @@ export const castVote = (candidate) => {
 export const getCandidates = () => {
   return (dispatch, getState) => {
     getState().contract.instance.getCandidateList.call()
-      .then((candidateList) => {
+      .then((candidates) => {
         dispatch({
           type: CONTRACT_GET_CANDIDATES,
-          candidates: candidateList.map((candidate) => getState().web3.instance.toAscii(candidate))
+          candidates
         })
       })
   }
