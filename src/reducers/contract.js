@@ -22,12 +22,14 @@ export default (state = {}, action) => {
     case CONTRACT_GET_CANDIDATES:
       return {
         ...state,
+        // Convert Solidity bytes32 to JavaScript string.
         candidates: action.candidates.map((candidate) => store.getState().web3.instance.toAscii(candidate))
       }
     case CONTRACT_GET_VOTES:
       return {
         ...state,
-        votes: action.votes.map((vote) => vote.toNumber())
+        // Convert Solidity BigNumber to JavaScript number.
+        votes: action.votes.map((count) => count.toNumber())
       }
     case CONTRACT_CAST_VOTE:
       return {
