@@ -12,7 +12,8 @@ import store from '../store'
  *   instance: {},
  *   voted: true,
  *   votes: [
- *   
+ *     4,
+ *     8
  *   ]
  * }
  */
