@@ -1,13 +1,20 @@
 import { connect } from 'react-redux'
-import { castVote, loadContract, getCandidates } from '../actions/contract'
+import { castVote, loadContract, getCandidates, getVotes } from '../actions/contract'
 import { fetchWeb3 } from '../actions/web3'
 import App from '../components/App'
 
-const load = () => {
+const initialize = () => {
   return (dispatch) => {
     return dispatch(fetchWeb3())
       .then(() => dispatch(loadContract()))
       .then(() => dispatch(getCandidates()))
+  }
+}
+
+const vote = (candidate) => {
+  return (dispatch) => {
+    return dispatch(castVote(candidate))
+      .then(() => dispatch(getVotes()))
   }
 }
 
@@ -20,8 +27,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    castVote: (candidate) => dispatch(castVote(candidate)),
-    load: () => dispatch(load())
+    initialize: () => dispatch(initialize()),
+    vote: (candidate) => dispatch(vote(candidate))
   }
 }
 

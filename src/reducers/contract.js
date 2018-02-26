@@ -1,4 +1,4 @@
-import { CONTRACT_CAST_VOTE, CONTRACT_GET_CANDIDATES, CONTRACT_LOAD } from '../constants'
+import { CONTRACT_CAST_VOTE, CONTRACT_GET_VOTES, CONTRACT_GET_CANDIDATES, CONTRACT_LOAD } from '../constants'
 import store from '../store'
 
 /**
@@ -10,7 +10,10 @@ import store from '../store'
  *     'Lucky\'s'
  *   ],
  *   instance: {},
- *   voted: true
+ *   voted: true,
+ *   votes: [
+ *   
+ *   ]
  * }
  */
 
@@ -20,6 +23,11 @@ export default (state = {}, action) => {
       return {
         ...state,
         candidates: action.candidates.map((candidate) => store.getState().web3.instance.toAscii(candidate))
+      }
+    case CONTRACT_GET_VOTES:
+      return {
+        ...state,
+        votes: action.votes.map((vote) => vote.toNumber())
       }
     case CONTRACT_CAST_VOTE:
       return {
