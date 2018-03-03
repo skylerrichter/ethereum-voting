@@ -1,9 +1,9 @@
 import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
-import rootReducer from './reducers/index'
+import reducers from './reducers'
 
 export default createStore(
-  rootReducer,
+  reducers,
   applyMiddleware(
     ReduxThunk
   )
