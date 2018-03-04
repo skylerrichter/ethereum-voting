@@ -1,25 +1,25 @@
-import { WEB3_LOAD } from '../constants'
+import { WEB3_GET_ACCOUNT } from '../constants'
 
 /**
  * Example state:
  * 
  * web3: {
- *   instance: {
- *     currentProvider: {},
- *     eth: {
- *       accounts: [
- *         '0x627306090abab3a6e1400e9345bc60c78a8bef57'
- *       ]
- *     }    
- *   }
+ *   accounts: '0x627306090abab3a6e1400e9345bc60c78a8bef57'
  * }
  */
 
-export default (state = {}, action) => {
-  switch(action.type) {
-    case WEB3_LOAD:
+/**
+ * Web3.
+ * @param  {Object} state
+ * @param  {string} options.type
+ * @param  {string} options.account
+ * @return {object}
+ */
+export default (state = { }, { type, account, network }) => {
+  switch (type) {
+    case WEB3_GET_ACCOUNT:
       return {
-        instance: action.instance
+        account
       }
     default:
       return state

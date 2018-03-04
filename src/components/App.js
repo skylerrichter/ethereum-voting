@@ -1,29 +1,62 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 
-import '../css/app.css'
-import '../css/open-sans.css'
-
 class App extends Component {
 
+  /**
+   * Constructor.
+   * @param  {props} props
+   * @return {void}
+   */
   constructor(props) {
     super(props)
     this.state = {
-      account: '',
       choice: null
     }
   }
 
-  componentWillMount() {
-    this.props.initialize().then(() => {
-      setInterval(() => {
-        this.setState({
-          account: _.get(this.props.web3, 'instance.eth.accounts.0', null)
-        })
+  /**
+   * Start poll
+   * @return {void}
+   */
+  startPoll() {
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.props.getAccount()
       }, 1000)
-    })
+    }  
   }
 
+  /**
+   * Component will mount.
+   * @return {void}
+   */
+  componentWillMount() {
+    this.props.getCandidates().then(() => this.startPoll())
+  }
+
+  /**
+   * Stop poll.
+   * @return {void}
+   */
+  stopPoll() {
+    clearInterval(this.interval)
+  }
+
+  /**
+   * Component will unmount.
+   * @return {void}
+   */
+  componentWillUnmount() {
+    if (this.interval) {
+      this.stopPoll()
+    }
+  }
+
+  /**
+   * Render.
+   * @return {object}
+   */
   render() {
     if (_.get(this.props.contract, 'voted', false)) {
       return (
@@ -53,9 +86,9 @@ class App extends Component {
               )
             })}
           </div>
-          <small>{this.state.account ? `address: ${this.state.account}` : 'Connecting to MetaMask.'}</small>
+          <small>{this.props.web3.account ? `address: ${this.props.web3.account}` : 'Connecting to MetaMask.'}</small>
           <button 
-            onClick={() => this.props.vote(this.state.choice)} 
+            onClick={() => this.props.voteFor(this.state.choice)} 
             disabled={this.state.choice === null}>
             Submit my vote!
           </button>

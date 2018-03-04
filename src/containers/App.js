@@ -1,23 +1,25 @@
 import { connect } from 'react-redux'
-import { castVote, loadContract, getCandidates, getVotes } from '../actions/contract'
-import { fetchWeb3 } from '../actions/web3'
+import { castVote, getCandidates, getVotes } from '../actions/contract'
+import { getAccount } from '../actions/web3'
 import App from '../components/App'
 
-const initialize = () => {
-  return (dispatch) => {
-    return dispatch(fetchWeb3())
-      .then(() => dispatch(loadContract()))
-      .then(() => dispatch(getCandidates()))
-  }
-}
-
-const vote = (candidate) => {
+/**
+ * Vote for.
+ * @param  {string} candidate
+ * @return {promise}
+ */
+const voteFor = (candidate) => {
   return (dispatch) => {
     return dispatch(castVote(candidate))
       .then(() => dispatch(getVotes()))
   }
 }
 
+/**
+ * Map state to props.
+ * @param  {object} state
+ * @return {object}
+ */
 const mapStateToProps = (state) => {
   return {
     contract: state.contract,
@@ -25,14 +27,21 @@ const mapStateToProps = (state) => {
   }
 }
 
+/**
+ * Map dispatch to props.
+ * @param  {function} dispatch
+ * @return {function}
+ */
 const mapDispatchToProps = (dispatch) => {
   return {
-    initialize: () => dispatch(initialize()),
-    vote: (candidate) => dispatch(vote(candidate))
+    getAccount: () => dispatch(getAccount()),
+    getCandidates: () => dispatch(getCandidates()),
+    voteFor: (candidate) => dispatch(voteFor(candidate))
   }
 }
 
+// Connect.
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)
