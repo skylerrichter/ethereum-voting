@@ -29,8 +29,7 @@ export default (state = { }, { type, candidates, votes }) => {
     case CONTRACT_GET_CANDIDATES:
       return {
         ...state,
-        // Convert Solidity bytes32 to JavaScript string.
-        candidates: candidates.map((candidate) => window.web3.toAscii(candidate))
+        candidates
       }
     case CONTRACT_GET_VOTES:
       return {

@@ -1,5 +1,6 @@
 import { CONTRACT_CAST_VOTE, CONTRACT_GET_CANDIDATES, CONTRACT_GET_VOTES } from '../constants'
 import { getCandidateList, totalVotesFor, voteForCandidate } from '../repositories/Voting'
+import getWeb3 from '../utilities/getWeb3'
 
 /**
  * Cast vote.
@@ -34,10 +35,12 @@ export const getVotes = (candidates) => (dispatch) => {
  * @return {function}
  */
 export const getCandidates = () => (dispatch) => {
-  return getCandidateList().then((candidates) => {
-    dispatch({
-      type: CONTRACT_GET_CANDIDATES,
-      candidates
+  return getWeb3.then(({ web3 }) => {
+    return getCandidateList().then((candidates) => {
+      dispatch({
+        type: CONTRACT_GET_CANDIDATES,
+        candidates: candidates.map((candidate) => web3.toAscii(candidate))
+      })
     })
   })
 }

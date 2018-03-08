@@ -1,15 +1,18 @@
 import TruffleContract from 'truffle-contract'
 import VotingContract from '../../build/contracts/Voting.json'
 import store from '../store'
+import getWeb3 from '../utilities/getWeb3'
 
 /**
  * Instance.
  * @return {promise}
  */
 export const instance = () => {
-  const voting = TruffleContract(VotingContract)
-  voting.setProvider(window.web3.currentProvider)
-  return voting.deployed()
+  return getWeb3.then(({ web3 }) => {
+    const voting = TruffleContract(VotingContract)
+    voting.setProvider(web3.currentProvider)
+    return voting.deployed()
+  })
 }
 
 /**
