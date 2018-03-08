@@ -8,12 +8,13 @@ import getWeb3 from '../utilities/getWeb3'
  */
 export const getAccount = () => (dispatch, getState) => {
   getWeb3.then(({ web3 }) => {
-    const account = _.get(web3, 'eth.accounts.0')
-    if (getState().web3.account !== account) {
-      dispatch({
-        type: WEB3_GET_ACCOUNT,
-        account
-      })
-    }
+    web3.eth.getAccounts((error, accounts) => {
+      if (getState().web3.account !== accounts[0]) {
+        dispatch({
+          type: WEB3_GET_ACCOUNT,
+          account: accounts[0]
+        })
+      }
+    })
   })
 }

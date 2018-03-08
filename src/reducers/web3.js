@@ -4,7 +4,7 @@ import { WEB3_GET_ACCOUNT } from '../constants'
  * Example state:
  * 
  * web3: {
- *   accounts: '0x627306090abab3a6e1400e9345bc60c78a8bef57'
+ *   account: '0x627306090abab3a6e1400e9345bc60c78a8bef57'
  * }
  */
 
