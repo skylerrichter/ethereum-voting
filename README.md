@@ -38,7 +38,7 @@ $ npm install
 ### Configure Truffle
 
 ```
-$ cp truffle.development.js
+$ cp truffle.development.js truffle.js
 ```
 
 If you have changed the hostname or port number in Ganache you will need to reflect these changes in the truffle.js file.
